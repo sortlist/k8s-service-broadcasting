@@ -31,7 +31,7 @@ jobs:
           go-version: 1.19
       -
         name: Set up golangci-lint
-        run: make golangci-lint
+        run: GOBIN=$(go env GOPATH)/bin make golangci-lint
       -
         name: Lint + build + test
         run: make all
