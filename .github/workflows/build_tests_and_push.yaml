@@ -1,4 +1,4 @@
-name: ci
+name: ci & build-push
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'master'
 
 jobs:
-  docker:
+  ci-build-push:
     runs-on: ubuntu-latest
     steps:
       -
@@ -30,8 +30,11 @@ jobs:
         with:
           go-version: 1.19
       -
-        name: Build
-        run: make build
+        name: Set up golangci-lint
+        run: make golangci-lint
+      -
+        name: Lint + build + test
+        run: make all
       -
         name: Build and push image
         uses: docker/build-push-action@v3
