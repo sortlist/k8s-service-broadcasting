@@ -33,7 +33,10 @@ jobs:
         name: Set up golangci-lint
         run: GOBIN=$(go env GOPATH)/bin make golangci-lint
       -
-        name: Lint + build + test
+        name: Build
+        run: make build
+      -
+        name: Lint + test
         run: make all
       -
         name: Build and push image
