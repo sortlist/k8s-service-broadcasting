@@ -12,7 +12,7 @@ golangci-lint:
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOBIN) v1.49.0
 
 lint:
-	golangci-lint run  ./...
+	golangci-lint run  --timeout 3m ./...
 	go mod tidy
 
 build:
