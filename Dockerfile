@@ -1,6 +1,4 @@
-FROM busybox:latest
-LABEL maintainer="FUSAKLA Martin Chodúr <m.chodur@seznam.cz>"
-
+FROM golang:1.19-alpine
 
 COPY k8s-service-broadcasting /bin/k8s-service-broadcasting
 COPY Dockerfile /
