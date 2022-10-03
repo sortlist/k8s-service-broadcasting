@@ -53,7 +53,7 @@ func init() {
 	rootCmd.Flags().StringVarP(&iface, "interface", "i", "0.0.0.0:8080", "Interface to listen on.")
 	rootCmd.Flags().StringVarP(&metricsIface, "metrics-interface", "m", "0.0.0.0:8081", "Interface for exposing metrics.")
 	rootCmd.Flags().StringVarP(&kubeconfigPath, "kubeconfig", "k", os.Getenv("KUBECONFIG"), "Location of the kubeconfig, default if in cluster config or value of KUBECONFIG env variable.")
-	rootCmd.Flags().StringVarP(&serviceName, "service", "s", "", "Name of service to sed the requests to.")
+	rootCmd.Flags().StringVarP(&serviceName, "service", "s", "", "Name of service(s) to sed the requests to (accept wildcard).")
 	rootCmd.Flags().StringVarP(&portName, "port-name", "p", "", "Name of service port to sed the requests to.")
 	rootCmd.Flags().StringVarP(&namespace, "namespace", "n", "", "Namespace to watch for.")
 	rootCmd.Flags().BoolVar(&allMustSucceed, "all-must-succeed", true, "By default if any backend fails, the whole request fails. If disabled one succeeded response is enough.")

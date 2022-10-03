@@ -15,6 +15,7 @@ package controller
 
 import (
 	"fmt"
+	"regexp"
 	"github.com/prometheus/client_golang/prometheus"
 	log "github.com/sirupsen/logrus"
 	"k8s.io/apimachinery/pkg/api/meta"
@@ -51,6 +52,10 @@ func NewEndpointController(config *rest.Config, namespace *string, serviceName s
 	if namespace != nil {
 		informerOptions = append(informerOptions, informers.WithNamespace(*namespace))
 	}
+	regexServiceName, err := regexp.Compile(wildCardToRegexp(serviceName))
+	if err != nil {
+		return nil, err
+	}
 	informerFactory = informers.NewSharedInformerFactoryWithOptions(clientset, 0, informerOptions...)
 	controller := EndpointsController{
 		clientset: clientset,
@@ -58,6 +63,7 @@ func NewEndpointController(config *rest.Config, namespace *string, serviceName s
 		informer:        informerFactory.Core().V1().Endpoints().Informer(),
 		lister:          informerFactory.Core().V1().Endpoints().Lister(),
 		serviceName:     serviceName,
+		regexServiceName: regexServiceName,
 		servicePortName: servicePortname,
 		updatesChannel:  updatesChannel,
 		stopChannel:     stopChannel,
@@ -73,6 +79,7 @@ type EndpointsController struct {
 	informer        cache.SharedIndexInformer
 	lister          listers.EndpointsLister
 	serviceName     string
+	regexServiceName *regexp.Regexp
 	servicePortName string
 	updatesChannel  chan *[]string
 	stopChannel     chan struct{}
@@ -85,7 +92,7 @@ func (e *EndpointsController) ListMatchingIPs() (*[]string, error) {
 		return nil, err
 	}
 	for _, endpoint := range endpoints {
-		if endpoint.Name != e.serviceName {
+		if ! e.regexServiceName.MatchString(endpoint.Name) {
 			continue
 		}
 		for _, subset := range endpoint.Subsets {
@@ -117,7 +124,7 @@ func (e *EndpointsController) OnAdd(obj interface{}) {
 	}
 	objectName := meta.AsPartialObjectMetadata(metaObject).Name
 	log.Debugf("Processing endpoints update for %v", objectName)
-	if e.serviceName != objectName {
+	if ! e.regexServiceName.MatchString(objectName) {
 		log.Debugf("Skipping non matching service: %v", objectName)
 		return
 	}
