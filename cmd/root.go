@@ -35,7 +35,7 @@ import (
 
 var (
 	iface, metricsIface, kubeconfigPath, namespace, logLevel, serviceName, portName string
-	keepalive, allMustSucceed                                                       bool
+	keepalive, allMustSucceed, readyWithoutDiscoveredEnpoints                       bool
 	timeout                                                                         time.Duration
 	kubeconfig                                                                      *rest.Config
 
@@ -60,6 +60,7 @@ func init() {
 	rootCmd.Flags().StringVarP(&logLevel, "log-level", "l", "info", "Log level (debug, info, warning, ...) default info.")
 	rootCmd.Flags().DurationVarP(&timeout, "timeout", "t", time.Second*10, "Timeout for mirrored requests.")
 	rootCmd.Flags().BoolVar(&keepalive, "keepalive", true, "If keepalive should be enabled.")
+	rootCmd.Flags().BoolVar(&readyWithoutDiscoveredEnpoints, "ready-no-endpoint", false, "Readiness probe passes with no discovered endpoint.")
 }
 
 // Execute executes the root command.
@@ -154,6 +155,10 @@ func runMultiplexer(cmd *cobra.Command, _ []string) {
 	}()
 
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
+
+	if readyWithoutDiscoveredEnpoints {
+		status.Ready()
+	}
 
 	run := true
 	for run {
