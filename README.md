@@ -5,11 +5,7 @@
 
 Tool allowing to broadcast/mirror/duplicate HTTP requests to all ready endpoints of a Kubernetes service.
 
-It supports two modes:
- - _Consistency_: Waits for response from all service endpoints and and response with one of erroneous response otherwise one of the succeeded. 
- - _Availability_: Responses with first successful response if any, otherwise with one of the error messages.
-
-This behaviour can be controlled by the `--all-must-succeed` flag. Defaults to `true`.
+This project was hacked in order to return an HTTP 200 whenever possible to the upstream (at least one 200 received downstream).
 
 ## Usage
 
