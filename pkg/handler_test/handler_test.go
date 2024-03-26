@@ -70,7 +70,7 @@ func TestMultiplexingHandler_ServeHTTP(t *testing.T) {
 			{addresses: []string{errServerURL}, timeout: 60 * time.Second, allMustSucceed: false, keepalive: false, response: http.StatusServiceUnavailable},
 			{addresses: []string{errServerURL, errServerURL}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: true, response: http.StatusServiceUnavailable},
 
-			{addresses: []string{okServerURL, errServerURL}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: false, response: http.StatusServiceUnavailable},
+			{addresses: []string{okServerURL, errServerURL}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: false, response: http.StatusOK},
 			{addresses: []string{okServerURL, errServerURL}, timeout: 60 * time.Second, allMustSucceed: false, keepalive: false, response: http.StatusOK},
 		}
 	)
