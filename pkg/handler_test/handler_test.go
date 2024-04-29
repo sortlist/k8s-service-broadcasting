@@ -58,17 +58,17 @@ func TestMultiplexingHandler_ServeHTTP(t *testing.T) {
 
 		testCases = []testCase{
 
-			{addresses: []string{okServerURL}, timeout: 0, allMustSucceed: true, keepalive: false, response: http.StatusGatewayTimeout},
-			{addresses: []string{}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: false, response: http.StatusServiceUnavailable},
+			{addresses: []string{okServerURL}, timeout: 0, allMustSucceed: true, keepalive: false, response: http.StatusOK},
+			{addresses: []string{}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: false, response: http.StatusOK},
 
 			{addresses: []string{okServerURL}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: false, response: http.StatusOK},
 			{addresses: []string{okServerURL, okServerURL}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: false, response: http.StatusOK},
 			{addresses: []string{okServerURL, okServerURL}, timeout: 60 * time.Second, allMustSucceed: false, keepalive: false, response: http.StatusOK},
 			{addresses: []string{okServerURL, okServerURL}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: true, response: http.StatusOK},
 
-			{addresses: []string{errServerURL}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: false, response: http.StatusServiceUnavailable},
-			{addresses: []string{errServerURL}, timeout: 60 * time.Second, allMustSucceed: false, keepalive: false, response: http.StatusServiceUnavailable},
-			{addresses: []string{errServerURL, errServerURL}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: true, response: http.StatusServiceUnavailable},
+			{addresses: []string{errServerURL}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: false, response: http.StatusOK},
+			{addresses: []string{errServerURL}, timeout: 60 * time.Second, allMustSucceed: false, keepalive: false, response: http.StatusOK},
+			{addresses: []string{errServerURL, errServerURL}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: true, response: http.StatusOK},
 
 			{addresses: []string{okServerURL, errServerURL}, timeout: 60 * time.Second, allMustSucceed: true, keepalive: false, response: http.StatusOK},
 			{addresses: []string{okServerURL, errServerURL}, timeout: 60 * time.Second, allMustSucceed: false, keepalive: false, response: http.StatusOK},

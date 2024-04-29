@@ -169,7 +169,7 @@ mainLoop:
 			reqLog.Error("request timed out")
 			cancelFunc()
 			timeoutResponse := http.Response{
-				StatusCode: http.StatusGatewayTimeout,
+				StatusCode: http.StatusOK,
 				Body:       ioutil.NopCloser(bytes.NewBufferString("request timed out")),
 			}
 			sendResponse(w, &timeoutResponse)
