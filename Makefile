@@ -6,7 +6,7 @@ DOCKER_IMAGE_TAG := $(shell git symbolic-ref -q --short HEAD || git describe --t
 DOCKER_IMAGE := $(DOCKER_REPO)/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
 GOBIN ?= $(GOPATH)/bin
 
-all: lint build test
+all: build test
 
 golangci-lint:
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOBIN) v1.49.0
