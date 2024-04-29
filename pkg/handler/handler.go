@@ -104,11 +104,11 @@ func (h *multiplexingHandler) decideFinalResponse(totalCount int, successfulResp
 
 	if failedCount == 0 && succeededCount == 0 {
 		decisionLog.Infof("no endpoints to query")
-		return newResponse(http.StatusServiceUnavailable, "no endpoints to query")
+		return newResponse(http.StatusOK, "no endpoints to query")
 	}
 	if failedCount == totalCount {
 		decisionLog.Infof("All endpoints failed")
-		return randomResponse(failedResponses)
+		return newResponse(http.StatusOK, "All endpoints failed")
 	}
 	if succeededCount >= totalCount {
 		decisionLog.Infof("All endpoints succeed, return a random one")
@@ -119,7 +119,7 @@ func (h *multiplexingHandler) decideFinalResponse(totalCount int, successfulResp
 		return randomResponse(successfulResponses)
 	}
 
-	return newResponse(http.StatusServiceUnavailable, "unknown error")
+	return newResponse(http.StatusOK, "unknown error")
 }
 
 func (h *multiplexingHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
